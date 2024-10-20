@@ -1,5 +1,7 @@
 .custom-purple {
   background-color: #670773;
+  width: 128px;  /* Set width to half of 256px */
+  height: 128px; /* Set height to half of 256px */
 }
 
 .custom-purple-text {
@@ -22,10 +24,9 @@
 }
 
 .price {
-  font-size: 4rem;
+  font-size: 2rem;
   font-weight: bold;
   margin-top: 1rem;
-  colour:#670773
 }
 
 .image-container {
