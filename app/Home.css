@@ -8,7 +8,7 @@
 
 .header {
   width: 100%;
-  background-color: #8A2BE2;
+  background-color: #670773;
   color: white;
   padding: 1rem;
   display: flex;
@@ -34,7 +34,7 @@
 }
 
 .increase-points-button {
-  background-color: #8A2BE2;
+  background-color: #670773;
   color: white;
   font-size: 2rem;
   font-weight: bold;
