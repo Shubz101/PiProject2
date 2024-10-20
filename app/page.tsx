@@ -89,7 +89,7 @@ export default function Home() {
 
   return (
     <div className="bg-gray-100 flex flex-col items-center justify-between min-h-screen">
-      <Script src="https://kit.fontawesome.com/18e66d329f.js" crossorigin="anonymous" />
+      <Script src="https://kit.fontawesome.com/18e66d329f.js"/>
       
       <div className="w-full custom-purple text-white p-4 flex items-center justify-between">
         <button onClick={toggleMenu}>
