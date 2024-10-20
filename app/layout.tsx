@@ -6,8 +6,8 @@ import Script from 'next/script'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Telegram Mini App',
-  description: 'A simple Telegram mini app using Next.js and Prisma',
+  title: 'Pi Trader Official',
+  description: 'A Telegram mini app for Pi Trader',
 }
 
 export default function RootLayout({
@@ -17,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <Script src="https://cdn.tailwindcss.com" strategy="beforeInteractive" />
+      </head>
       <body className={inter.className}>
         <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
         {children}
