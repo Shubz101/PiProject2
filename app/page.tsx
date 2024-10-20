@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { WebApp } from '@twa-dev/types'
 import Script from 'next/script'
+import './globals.css'
 
 declare global {
   interface Window {
@@ -23,7 +24,6 @@ export default function Home() {
       const tg = window.Telegram.WebApp
       tg.ready()
 
-      const initData = tg.initData || ''
       const initDataUnsafe = tg.initDataUnsafe || {}
 
       if (initDataUnsafe.user) {
@@ -42,7 +42,7 @@ export default function Home() {
               setUser(data)
             }
           })
-          .catch((err) => {
+          .catch(() => {
             setError('Failed to fetch user data')
           })
       } else {
@@ -72,7 +72,7 @@ export default function Home() {
       } else {
         setError('Failed to increase points')
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred while increasing points')
     }
   }
@@ -89,7 +89,7 @@ export default function Home() {
 
   return (
     <div className="bg-gray-100 flex flex-col items-center justify-between min-h-screen">
-      <Script src="https://kit.fontawesome.com/18e66d329f.js"/>
+      <Script src="https://kit.fontawesome.com/18e66d329f.js" />
       
       <div className="w-full custom-purple text-white p-4 flex items-center justify-between">
         <button onClick={toggleMenu}>
@@ -132,15 +132,6 @@ export default function Home() {
           <li><a href="#" className="block py-2 px-4 hover:bg-gray-700">About</a></li>
         </ul>
       </div>
-
-      <style jsx>{`
-        .custom-purple {
-          background-color: #8A2BE2;
-        }
-        .custom-purple-text {
-          color: #8A2BE2;
-        }
-      `}</style>
     </div>
   )
 }
