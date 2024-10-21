@@ -1,18 +1,30 @@
-// lib/telegram.ts
+import crypto from 'crypto';
 
-import crypto from 'crypto'
-
-export function verifyTelegramWebAppData(telegramWebAppData: string): any | null {
-  // This is a placeholder implementation. You should replace this with actual verification logic.
-  // Refer to Telegram's documentation for the correct way to verify the data.
+/**
+ * Verifies the Telegram Web App data.
+ * @param telegramWebAppData The encoded data sent from Telegram.
+ * @param secret The secret token provided by Telegram for verification.
+ * @returns The parsed data if verification is successful, otherwise null.
+ */
+export function verifyTelegramWebAppData(telegramWebAppData: string, secret: string): any | null {
+  const [data, hash] = telegramWebAppData.split('|');
   
-  // For now, we'll just parse the data and return it
-  try {
-    const decodedData = Buffer.from(telegramWebAppData, 'base64').toString('utf-8')
-    const parsedData = JSON.parse(decodedData)
-    return parsedData
-  } catch (error) {
-    console.error('Error parsing Telegram Web App data:', error)
-    return null
+  // Decode the data
+  const decodedData = Buffer.from(data, 'base64').toString('utf-8');
+  
+  // Create a hash of the decoded data using the secret
+  const expectedHash = crypto.createHmac('sha256', secret).update(data).digest('base64');
+
+  // Compare the computed hash with the received hash
+  if (expectedHash === hash) {
+    try {
+      return JSON.parse(decodedData);
+    } catch (error) {
+      console.error('Error parsing Telegram Web App data:', error);
+      return null;
+    }
+  } else {
+    console.error('Invalid hash. Data verification failed.');
+    return null;
   }
 }
