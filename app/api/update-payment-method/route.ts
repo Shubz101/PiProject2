@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
         }
 
         const updatedUser = await prisma.user.update({
-            where: { telegramId },
             data: { paymentMethod },
         })
 
