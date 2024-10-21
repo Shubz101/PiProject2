@@ -1,77 +1,60 @@
-'use client'
+import React, { useState } from 'react';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+const PaymentMethods: React.FC = () => {
+  const [visibleInput, setVisibleInput] = useState<string | null>(null);
 
-export default function Page2() {
-  const [paymentMethod, setPaymentMethod] = useState('Binance')
-  const router = useRouter()
-
-  const handlePaymentMethodChange = (method: string) => {
-    setPaymentMethod(method)
-  }
-
-  const handleNextClick = () => {
-    if (paymentMethod === 'Binance') {
-      router.push('/pageb')
-    } else {
-      router.push('/pageu')
-    }
-  }
+  const toggleBox = (boxId: string) => {
+    setVisibleInput(visibleInput === boxId ? null : boxId);
+  };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col">
-      <div className="bg-custom-purple text-white py-6 text-center">
-        <h1 className="text-4xl font-bold">Pi Trader</h1>
-      </div>
-      <div className="flex-grow flex flex-col items-center justify-center">
-        <h2 className="text-3xl font-bold mb-8 text-center">Select Your Payment Receiving Platform</h2>
-        <div className="mb-6">
-          <label className="flex items-center space-x-4">
-            <input
-              type="radio"
-              id="binance"
-              name="payment"
-              className="form-radio h-6 w-6 text-gray-600"
-              checked={paymentMethod === 'Binance'}
-              onChange={() => handlePaymentMethodChange('Binance')}
-            />
-            <span className="text-2xl font-semibold">Binance</span>
-          </label>
+    <div className="bg-white h-screen flex flex-col justify-between">
+      <div className="p-4">
+        <div className="flex items-center mb-4">
+          <i className="fas fa-arrow-left text-xl"></i>
+          <h1 className="text-xl font-semibold ml-4">Payment Methods</h1>
         </div>
-        <div className="mb-8">
-          <label className="flex items-center space-x-4">
-            <input
-              type="radio"
-              id="upi"
-              name="payment"
-              className="form-radio h-6 w-6 text-gray-600"
-              checked={paymentMethod === 'UPI'}
-              onChange={() => handlePaymentMethodChange('UPI')}
-            />
-            <span className="text-2xl font-semibold">UPI</span>
-          </label>
+        <div className="space-y-4">
+          {['paypal', 'googlepay', 'applepay', 'mastercard'].map(method => (
+            <div key={method}>
+              <div
+                id={`${method}-box`}
+                className="flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-pointer"
+                onClick={() => toggleBox(`${method}-input`)}
+              >
+                <div className="flex items-center">
+                  <img
+                    alt={`${method} logo`}
+                    className="w-10 h-10"
+                    src={`https://storage.googleapis.com/a1aa/image/${method}.jpg`} // Replace with actual image URLs
+                  />
+                  <span className="ml-4 text-lg">{method.charAt(0).toUpperCase() + method.slice(1)}</span>
+                </div>
+                <span className="text-purple-600">Connected</span>
+              </div>
+              <div
+                id={`${method}-input`}
+                className={`hidden p-4 bg-gray-100 rounded-lg ${visibleInput === `${method}-input` ? '' : 'hidden'}`}
+              >
+                <input
+                  type="text"
+                  placeholder={`Enter ${method.charAt(0).toUpperCase() + method.slice(1)} address`}
+                  className="w-full p-2 border border-gray-300 rounded-lg"
+                />
+              </div>
+            </div>
+          ))}
         </div>
-        <p className="text-custom-purple font-semibold mb-12 text-2xl text-center">Choose Binance for Faster Payment Experiences</p>
+        <div className="mt-8">
+          <button className="w-full py-4 bg-purple-100 text-purple-600 rounded-lg">Add New Card</button>
+        </div>
       </div>
-      <div className="flex justify-end items-end p-6">
-        <button
-          onClick={handleNextClick}
-          className="bg-custom-purple text-white text-2xl font-bold py-3 px-12 rounded-full"
-          style={{ transform: 'scale(1.3)' }}
-        >
-          Next
-        </button>
+      <div className="flex justify-between p-4">
+        <button className="w-1/2 py-4 bg-purple-100 text-purple-600 rounded-lg mr-2">Cancel</button>
+        <button className="w-1/2 py-4 bg-purple-600 text-white rounded-lg ml-2">Continue</button>
       </div>
-
-      <style jsx>{`
-        .bg-custom-purple {
-          background-color: #670773;
-        }
-        .text-custom-purple {
-          color: #670773;
-        }
-      `}</style>
     </div>
-  )
-}
+  );
+};
+
+export default PaymentMethods;
