@@ -54,9 +54,9 @@ const IntroPage = ({ telegramId }: { telegramId: number }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-white text-black">
       <div className={`w-full max-w-md aspect-[3/4] rounded-2xl ${slides[currentSlide].color} transition-all duration-500 mb-8 flex flex-col items-center justify-center p-6 text-center`}>
-        <h2 className="text-2xl font-bold mb-4">{slides[currentSlide].title}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-black">{slides[currentSlide].title}</h2>
         <p className="text-gray-700">{slides[currentSlide].description}</p>
       </div>
 
@@ -75,7 +75,7 @@ const IntroPage = ({ telegramId }: { telegramId: number }) => {
         <button
           onClick={handlePrevious}
           className={`px-6 py-2 rounded-lg ${
-            currentSlide === 0 ? 'invisible' : 'bg-gray-200'
+            currentSlide === 0 ? 'invisible' : 'bg-gray-200 text-black'
           }`}
         >
           Previous
