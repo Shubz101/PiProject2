@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
         }
 
         const updatedUser = await prisma.user.update(
-            data: { paymentMethod },
+            data, { paymentMethod },
         )
 
         return NextResponse.json({ success: true, user: updatedUser })
