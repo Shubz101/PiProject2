@@ -20,8 +20,16 @@ export async function POST(req: NextRequest) {
                     username: userData.username || '',
                     firstName: userData.first_name || '',
                     lastName: userData.last_name || '',
-                    paymentMethod: null  // Initialize with null
+                    paymentMethod: null
                 }
+            })
+        }
+
+        // Update paymentMethod if provided
+        if (userData.paymentMethod) {
+            user = await prisma.user.update({
+                where: { telegramId: userData.id },
+                data: { paymentMethod: userData.paymentMethod }
             })
         }
 
