@@ -1,108 +1,117 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { WebApp } from '@twa-dev/types'
+import Script from 'next/script'
+import Link from 'next/link'
 
-export default function Page2() {
-  const [paymentMethod, setPaymentMethod] = useState('Binance')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
-
-  const handlePaymentMethodChange = (method: string) => {
-    setPaymentMethod(method)
-  }
-
-  const handleNextClick = async () => {
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      const response = await fetch('/api/update-payment-method', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ paymentMethod }),
-      })
-
-      if (response.ok) {
-        console.log('Payment method saved successfully')
-        // Navigate to the appropriate page based on the payment method
-        if (paymentMethod === 'Binance') {
-          router.push('/pageb')
-        } else {
-          router.push('/pageu')
-        }
-      } else {
-        const errorData = await response.json()
-        setError(errorData.error || 'Failed to save payment method')
-      }
-    } catch (error) {
-      console.error('Error saving payment method:', error)
-      setError('An unexpected error occurred')
-    } finally {
-      setIsLoading(false)
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp: WebApp
     }
   }
+}
+
+export default function Home() {
+  const [user, setUser] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+      const tg = window.Telegram.WebApp
+      tg.ready()
+
+      const initData = tg.initData || ''
+      const initDataUnsafe = tg.initDataUnsafe || {}
+
+      if (initDataUnsafe.user) {
+        fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(initDataUnsafe.user),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.error) {
+              setError(data.error)
+            } else {
+              setUser(data)
+            }
+          })
+          .catch((err) => {
+            setError('Failed to fetch user data')
+          })
+      } else {
+        setError('No user data available')
+      }
+    } else {
+      setError('This app should be opened in Telegram')
+    }
+  }, [])
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen)
+  }
+
+  if (error) {
+    return <div className="container mx-auto p-4 text-red-500">{error}</div>
+  }
+
+  if (!user) return <div className="container mx-auto p-4">Loading...</div>
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col">
-      <div className="bg-custom-purple text-white py-6 text-center">
-        <h1 className="text-4xl font-bold">Pi Trader</h1>
-      </div>
-      <div className="flex-grow flex flex-col items-center justify-center">
-        <h2 className="text-3xl font-bold mb-8 text-center">Select Your Payment Receiving Platform</h2>
-        <div className="mb-6">
-          <label className="flex items-center space-x-4">
-            <input
-              type="radio"
-              id="binance"
-              name="payment"
-              className="form-radio h-6 w-6 text-gray-600"
-              checked={paymentMethod === 'Binance'}
-              onChange={() => handlePaymentMethodChange('Binance')}
-            />
-            <span className="text-2xl font-semibold">Binance</span>
-          </label>
-        </div>
-        <div className="mb-8">
-          <label className="flex items-center space-x-4">
-            <input
-              type="radio"
-              id="upi"
-              name="payment"
-              className="form-radio h-6 w-6 text-gray-600"
-              checked={paymentMethod === 'UPI'}
-              onChange={() => handlePaymentMethodChange('UPI')}
-            />
-            <span className="text-2xl font-semibold">UPI</span>
-          </label>
-        </div>
-        <p className="text-custom-purple font-semibold mb-12 text-2xl text-center">Choose Binance for Faster Payment Experiences</p>
-      </div>
-      <div className="flex justify-end items-end p-6">
-        <button
-          onClick={handleNextClick}
-          className="bg-custom-purple text-white text-2xl font-bold py-3 px-12 rounded-full"
-          style={{ transform: 'scale(1.3)' }}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Processing...' : 'Next'}
+    <div className="bg-gray-100 flex flex-col items-center justify-between min-h-screen">
+      <Script src="https://kit.fontawesome.com/18e66d329f.js" crossorigin="anonymous" />
+      
+      <div className="w-full custom-purple text-white p-4 flex items-center justify-between">
+        <button onClick={toggleMenu}>
+          <i className="fas fa-bars text-2xl"></i>
         </button>
+        <h1 className="text-2xl font-bold">Pi Trader Official</h1>
+        <div></div>
       </div>
-      {error && (
-        <div className="text-red-500 text-center mt-4">
-          {error}
-        </div>
-      )}
+
+      <div className="text-center mt-4">
+        <p className="custom-purple-text">
+          Pi Coin has not launched. This is the premarket price set by our team and does not represent Official data
+        </p>
+        <br /><br />
+        <h2 className="text-4xl font-bold mt-4">$0.65/Pi</h2>
+      </div>
+
+      <div className="flex justify-center mt-8">
+        <img src="https://storage.googleapis.com/a1aa/image/nHtKiYEJNtYhCFGEdd2czOW74EMguRulx5F4Ve6ewjWmxanTA.jpg" alt="Placeholder image representing Pi Coin" className="custom-purple rounded-full w-64 h-64" width="256" height="256" />
+      </div>
+
+      <div className="w-full flex flex-col items-center mb-8">
+        <Link href="/page2">
+          <button className="custom-purple text-white text-2xl font-bold py-4 px-16 rounded-full mt-8">
+            Sell Your Pi
+          </button>
+        </Link>
+        <p className="mt-4">Your current points: {user.points}</p>
+      </div>
+
+      {/* Sliding Menu */}
+      <div id="menu" className={`fixed top-0 left-0 h-full w-64 bg-gray-800 text-white transform ${menuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
+        <button onClick={toggleMenu} className="absolute top-4 right-4 text-white">Close</button>
+        <ul className="mt-16">
+          <li><a href="#" className="block py-2 px-4 hover:bg-gray-700">Home</a></li>
+          <li><a href="#" className="block py-2 px-4 hover:bg-gray-700">Transaction History</a></li>
+          <li><a href="#" className="block py-2 px-4 hover:bg-gray-700">About</a></li>
+        </ul>
+      </div>
 
       <style jsx>{`
-        .bg-custom-purple {
-          background-color: #670773;
+        .custom-purple {
+          background-color: #8A2BE2;
         }
-        .text-custom-purple {
-          color: #670773;
+        .custom-purple-text {
+          color: #8A2BE2;
         }
       `}</style>
     </div>
