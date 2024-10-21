@@ -5,23 +5,45 @@ import { useRouter } from 'next/navigation'
 
 export default function Page2() {
   const [paymentMethod, setPaymentMethod] = useState('Binance')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   const handlePaymentMethodChange = (method: string) => {
     setPaymentMethod(method)
   }
 
-  const handleNextClick = () => {
-    // Here you can handle the navigation based on the selected payment method
-    // For now, we'll just log the selected method
-    console.log('Selected payment method:', paymentMethod)
-    
-    // You can add navigation logic here, for example:
-    // if (paymentMethod === 'Binance') {
-    //   router.push('/pageb')
-    // } else {
-    //   router.push('/pageu')
-    // }
+  const handleNextClick = async () => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch('/api/update-payment-method', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ paymentMethod }),
+      })
+
+      if (response.ok) {
+        console.log('Payment method saved successfully')
+        // Navigate to the appropriate page based on the payment method
+        if (paymentMethod === 'Binance') {
+          router.push('/pageb')
+        } else {
+          router.push('/pageu')
+        }
+      } else {
+        const errorData = await response.json()
+        setError(errorData.error || 'Failed to save payment method')
+      }
+    } catch (error) {
+      console.error('Error saving payment method:', error)
+      setError('An unexpected error occurred')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -64,10 +86,16 @@ export default function Page2() {
           onClick={handleNextClick}
           className="bg-custom-purple text-white text-2xl font-bold py-3 px-12 rounded-full"
           style={{ transform: 'scale(1.3)' }}
+          disabled={isLoading}
         >
-          Next
+          {isLoading ? 'Processing...' : 'Next'}
         </button>
       </div>
+      {error && (
+        <div className="text-red-500 text-center mt-4">
+          {error}
+        </div>
+      )}
 
       <style jsx>{`
         .bg-custom-purple {
