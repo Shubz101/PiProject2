@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { WebApp } from '@twa-dev/types'
 import Script from 'next/script'
 import Link from 'next/link'
+import IntroPage from './components/IntroPage'
 
 declare global {
   interface Window {
@@ -16,6 +17,8 @@ export default function Home() {
   const [user, setUser] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
@@ -39,35 +42,47 @@ export default function Home() {
               setError(data.error)
             } else {
               setUser(data)
+              setShowIntro(!data.introSeen)
             }
           })
           .catch((err) => {
             setError('Failed to fetch user data')
           })
+          .finally(() => {
+            setLoading(false)
+          })
       } else {
         setError('No user data available')
+        setLoading(false)
       }
     } else {
       setError('This app should be opened in Telegram')
+      setLoading(false)
     }
   }, [])
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
+  if (loading) {
+    return <div className="container mx-auto p-4">Loading...</div>
   }
 
   if (error) {
     return <div className="container mx-auto p-4 text-red-500">{error}</div>
   }
 
-  if (!user) return <div className="container mx-auto p-4">Loading...</div>
+  if (!user) {
+    return <div className="container mx-auto p-4">Loading...</div>
+  }
+
+  if (showIntro) {
+    return <IntroPage telegramId={user.telegramId} />
+  }
 
   return (
     <div className="bg-gray-100 flex flex-col items-center justify-between min-h-screen">
       <Script src="https://kit.fontawesome.com/18e66d329f.js"/>
       
       <div className="w-full custom-purple text-white p-4 flex items-center justify-between">
-        <button onClick={toggleMenu}>
+        <button onClick={() => setMenuOpen(!menuOpen)}>
           <i className="fas fa-bars text-2xl"></i>
         </button>
         <h1 className="text-2xl font-bold">Pi Trader Official</h1>
@@ -83,7 +98,7 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center mt-8">
-        <img src="https://storage.googleapis.com/a1aa/image/nHtKiYEJNtYhCFGEdd2czOW74EMguRulx5F4Ve6ewjWmxanTA.jpg" alt="Placeholder image representing Pi Coin" className="custom-purple rounded-full w-64 h-64" width="256" height="256" />
+        <img src="/api/placeholder/400/320" alt="Placeholder image representing Pi Coin" className="custom-purple rounded-full w-64 h-64" width="256" height="256" />
       </div>
 
       <div className="w-full flex flex-col items-center mb-8">
@@ -97,7 +112,7 @@ export default function Home() {
 
       {/* Sliding Menu */}
       <div id="menu" className={`fixed top-0 left-0 h-full w-64 bg-gray-800 text-white transform ${menuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
-        <button onClick={toggleMenu} className="absolute top-4 right-4 text-white">Close</button>
+        <button onClick={() => setMenuOpen(false)} className="absolute top-4 right-4 text-white">Close</button>
         <ul className="mt-16">
           <li><a href="#" className="block py-2 px-4 hover:bg-gray-700">Home</a></li>
           <li><a href="#" className="block py-2 px-4 hover:bg-gray-700">Transaction History</a></li>
