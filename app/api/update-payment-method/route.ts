@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Invalid payment method' }, { status: 400 })
         }
 
-        const updatedUser = await prisma.user.update({
+        const updatedUser = await prisma.user.update(
             data: { paymentMethod },
-        })
+        )
 
         return NextResponse.json({ success: true, user: updatedUser })
     } catch (error) {
