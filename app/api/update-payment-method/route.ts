@@ -10,14 +10,6 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        // Verify the Telegram Web App data
-        const userData = verifyTelegramWebAppData(telegramWebAppData)
-        if (!userData) {
-            return NextResponse.json({ error: 'Invalid Telegram Web App data' }, { status: 401 })
-        }
-
-        const telegramId = userData.id
-
         // Validate paymentMethod
         if (paymentMethod !== 'Binance' && paymentMethod !== 'UPI') {
             return NextResponse.json({ error: 'Invalid payment method' }, { status: 400 })
