@@ -71,7 +71,7 @@ export default function Home() {
         setLoading(false)
       }
     } else {
-      setError('This app should be opened in Telegram')
+      setError('Chutiye Ho Tum')
       setLoading(false)
     }
   }, [])
