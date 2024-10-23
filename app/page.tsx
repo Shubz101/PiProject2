@@ -24,7 +24,7 @@ export default function Home() {
 
   const handleMenuItemClick = (item: string) => {
     if (item === 'Live Support') {
-      window.location.href = '/LiveSupport.html'
+      window.location.href = 'LiveSupport.html'
     } else if (item === 'Home') {
       // Stay on the current page or refresh
       window.location.href = '/'
