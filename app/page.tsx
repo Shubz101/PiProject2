@@ -147,7 +147,7 @@ export default function Home() {
         </button>
         <nav className="mt-16">
           <ul className="menu-items">
-            {['Home', 'Transaction History', 'About'].map((item, index) => (
+            {['Home', 'Transaction History', 'Live Support'].map((item, index) => (
               <li key={index} style={{animationDelay: `${index * 0.1}s`}}>
                 <a 
                   href="#" 
