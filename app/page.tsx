@@ -22,6 +22,19 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
 
+  const handleMenuItemClick = (item: string) => {
+    if (item === 'Live Support') {
+      window.location.href = '/LiveSupport.html'
+    } else if (item === 'Home') {
+      // Stay on the current page or refresh
+      window.location.href = '/'
+    } else if (item === 'Transaction History') {
+      // Add your transaction history route here
+      // window.location.href = '/transaction-history'
+    }
+    setMenuOpen(false)
+  }
+
   useEffect(() => {
     setMounted(true)
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
@@ -151,6 +164,10 @@ export default function Home() {
               <li key={index} style={{animationDelay: `${index * 0.1}s`}}>
                 <a 
                   href="#" 
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleMenuItemClick(item)
+                  }}
                   className="block py-3 px-6 hover:bg-white/10 transition-colors duration-300"
                 >
                   {item}
