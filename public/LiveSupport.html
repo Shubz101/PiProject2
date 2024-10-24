@@ -18,7 +18,7 @@
         
         <div class="space-y-4">
             <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer1')">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer1', this)">
                     <span class="text-gray-900">So, you're a tech startup?</span>
                     <i class="fas fa-plus text-gray-500"></i>
                 </div>
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer2')">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer2', this)">
                     <span class="text-gray-900">Is demo right for me?</span>
                     <i class="fas fa-plus text-gray-500"></i>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer3')">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer3', this)">
                     <span class="text-gray-900">How do I sign up?</span>
                     <i class="fas fa-plus text-gray-500"></i>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer4')">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleAnswer('answer4', this)">
                     <span class="text-gray-900">What's the onboarding like? Do you charge for implementation?</span>
                     <i class="fas fa-plus text-gray-500"></i>
                 </div>
@@ -53,14 +53,21 @@
                     Our onboarding process is smooth and straightforward. We do not charge for implementation.
                 </div>
             </div>
+        </div>
 
     <script>
-        function toggleAnswer(id) {
+        function toggleAnswer(id, element) {
             var answer = document.getElementById(id);
+            var icon = element.querySelector('i');
+
             if (answer.classList.contains('hidden')) {
                 answer.classList.remove('hidden');
+                icon.classList.remove('fa-plus');
+                icon.classList.add('fa-minus');
             } else {
                 answer.classList.add('hidden');
+                icon.classList.remove('fa-minus');
+                icon.classList.add('fa-plus');
             }
         }
     </script>
