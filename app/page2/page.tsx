@@ -17,38 +17,38 @@ export default function PaymentMethods() {
 
   const paymentMethods: PaymentMethod[] = [
     {
-      id: 'paypal',
-      name: 'PayPal',
-      image: 'https://storage.googleapis.com/a1aa/image/LM00lHy4e4VEfEwshfXBUMcJYM0B328inIsGRj7TYfhafrHdC.jpg',
-      displayText: 'PayPal',
+      id: 'binance',
+      name: 'Binance',
+      image: 'https://example.com/binance-logo.jpg', // Replace with actual image URL
+      displayText: 'Binance',
       isConnected: true,
-      placeholder: 'Enter PayPal address'
+      placeholder: 'Enter Binance address'
     },
     {
-      id: 'googlepay',
-      name: 'Google Pay',
-      image: 'https://storage.googleapis.com/a1aa/image/SvKY98RDkvYhENmLE9Ukt5u94yGsWNixkJM5U691UbdeveoTA.jpg',
-      displayText: 'Google Pay',
+      id: 'kucoin',
+      name: 'KuCoin',
+      image: 'https://example.com/kucoin-logo.jpg', // Replace with actual image URL
+      displayText: 'KuCoin',
       isConnected: true,
-      placeholder: 'Enter Google Pay address'
+      placeholder: 'Enter KuCoin address'
     },
     {
-      id: 'applepay',
-      name: 'Apple Pay',
-      image: 'https://storage.googleapis.com/a1aa/image/YqpCh7xg0Ab9N17SKmdPm6cBYfCqsSwebOnsx553IeS1f1jOB.jpg',
-      displayText: 'Apple Pay',
+      id: 'trustwallet',
+      name: 'Trust Wallet',
+      image: 'https://example.com/trustwallet-logo.jpg', // Replace with actual image URL
+      displayText: 'Trust Wallet',
       isConnected: true,
-      placeholder: 'Enter Apple Pay address'
+      placeholder: 'Enter Trust Wallet address'
     },
     {
-      id: 'mastercard',
-      name: 'Mastercard',
-      image: 'https://storage.googleapis.com/a1aa/image/XBvmqXf3efCHMIrLcbgQfNciUh1kUfjmogYgjIg8xeoIeveoTA.jpg',
-      displayText: '•••• 2766',
+      id: 'upi',
+      name: 'UPI',
+      image: 'https://example.com/upi-logo.jpg', // Replace with actual image URL
+      displayText: 'UPI',
       isConnected: true,
-      placeholder: 'Enter Mastercard details'
+      placeholder: 'Enter UPI address'
     }
-  ]
+]
 
   const toggleInput = (id: string) => {
     setOpenInputId(openInputId === id ? null : id)
