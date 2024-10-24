@@ -36,7 +36,7 @@ export default function PaymentMethods() {
   {
     id: 'trustwallet',
     name: 'Trust Wallet',
-    image: 'https://imgur.com/PQ5PJpv.jpg', // Update the image path
+    image: 'https://i.imgur.com/PQ5PJpv.jpg', // Update the image path
     displayText: 'Trust Wallet',
     isConnected: false,
     placeholder: 'Enter Trust Wallet address'
