@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import styles from './PaymentMethods.module.css'
 
 interface PaymentMethod {
   id: string
@@ -19,7 +20,7 @@ export default function PaymentMethods() {
     {
       id: 'binance',
       name: 'Binance',
-      image: 'https://example.com/binance-logo.jpg', // Replace with actual image URL
+      image: 'https://example.com/binance-logo.jpg',
       displayText: 'Binance',
       isConnected: false,
       placeholder: 'Enter Binance address'
@@ -27,7 +28,7 @@ export default function PaymentMethods() {
     {
       id: 'kucoin',
       name: 'KuCoin',
-      image: 'https://example.com/kucoin-logo.jpg', // Replace with actual image URL
+      image: 'https://example.com/kucoin-logo.jpg',
       displayText: 'KuCoin',
       isConnected: false,
       placeholder: 'Enter KuCoin address'
@@ -35,7 +36,7 @@ export default function PaymentMethods() {
     {
       id: 'trustwallet',
       name: 'Trust Wallet',
-      image: 'https://example.com/trustwallet-logo.jpg', // Replace with actual image URL
+      image: 'https://example.com/trustwallet-logo.jpg',
       displayText: 'Trust Wallet',
       isConnected: false,
       placeholder: 'Enter Trust Wallet address'
@@ -43,51 +44,51 @@ export default function PaymentMethods() {
     {
       id: 'upi',
       name: 'UPI',
-      image: 'https://example.com/upi-logo.jpg', // Replace with actual image URL
+      image: 'https://example.com/upi-logo.jpg',
       displayText: 'UPI',
       isConnected: false,
       placeholder: 'Enter UPI address'
     }
-]
+  ]
 
   const toggleInput = (id: string) => {
     setOpenInputId(openInputId === id ? null : id)
   }
 
   return (
-    <div className="bg-white h-screen flex flex-col justify-between">
-      <div className="p-4">
-        <div className="flex items-center mb-4">
-          <i className="fas fa-arrow-left text-xl"></i>
-          <h1 className="text-xl font-semibold ml-4">Payment Methods</h1>
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <div className={styles.header}>
+          <i className="fas fa-arrow-left"></i>
+          <h1>Payment Methods</h1>
         </div>
         
-        <div className="space-y-4">
+        <div className={styles.methodsList}>
           {paymentMethods.map((method) => (
             <div key={method.id}>
               <div 
-                className="flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-pointer"
+                className={styles.methodCard}
                 onClick={() => toggleInput(method.id)}
               >
-                <div className="flex items-center">
+                <div className={styles.methodInfo}>
                   <Image
                     src={method.image}
                     alt={`${method.name} logo`}
                     width={40}
                     height={40}
-                    className="w-10 h-10"
+                    className={styles.methodLogo}
                   />
-                  <span className="ml-4 text-lg">{method.displayText}</span>
+                  <span className={styles.methodName}>{method.displayText}</span>
                 </div>
-                <span className="text-purple-600">Connected</span>
+                <span className={styles.connectedStatus}>Connected</span>
               </div>
               
               {openInputId === method.id && (
-                <div className="p-4 bg-gray-100 rounded-lg mt-2">
+                <div className={styles.inputContainer}>
                   <input 
                     type="text" 
                     placeholder={method.placeholder}
-                    className="w-full p-2 border border-gray-300 rounded-lg"
+                    className={styles.addressInput}
                   />
                 </div>
               )}
@@ -95,20 +96,14 @@ export default function PaymentMethods() {
           ))}
         </div>
 
-        <div className="mt-8">
-          <button className="w-full py-4 bg-purple-100 text-purple-600 rounded-lg">
-            Connect Payment Address
-          </button>
+        <div className={styles.connectButton}>
+          <button>Connect Payment Address</button>
         </div>
       </div>
 
-      <div className="flex justify-between p-4">
-        <button className="w-1/2 py-4 bg-purple-100 text-purple-600 rounded-lg mr-2">
-          Cancel
-        </button>
-        <button className="w-1/2 py-4 bg-purple-600 text-white rounded-lg ml-2">
-          Continue
-        </button>
+      <div className={styles.footer}>
+        <button className={styles.cancelButton}>Cancel</button>
+        <button className={styles.continueButton}>Continue</button>
       </div>
     </div>
   )
