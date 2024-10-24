@@ -80,7 +80,10 @@ export default function PaymentMethods() {
                   />
                   <span className={styles.methodName}>{method.displayText}</span>
                 </div>
-                <span className={styles.connectedStatus}>Connected</span>
+                <span className={`${
+                  styles.connectedStatus} ${method.isConnected ? styles.connected : styles.notConnected}`}>
+                  {method.isConnected ? 'Connected' : 'Not Connected'}
+                </span>
               </div>
               
               {openInputId === method.id && (
