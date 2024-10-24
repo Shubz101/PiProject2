@@ -17,39 +17,39 @@ export default function PaymentMethods() {
   const [openInputId, setOpenInputId] = useState<string | null>(null)
 
   const paymentMethods: PaymentMethod[] = [
-    {
-      id: 'binance',
-      name: 'Binance',
-      image: 'https://example.com/binance-logo.jpg',
-      displayText: 'Binance',
-      isConnected: false,
-      placeholder: 'Enter Binance address'
-    },
-    {
-      id: 'kucoin',
-      name: 'KuCoin',
-      image: 'https://example.com/kucoin-logo.jpg',
-      displayText: 'KuCoin',
-      isConnected: false,
-      placeholder: 'Enter KuCoin address'
-    },
-    {
-      id: 'trustwallet',
-      name: 'Trust Wallet',
-      image: 'https://example.com/trustwallet-logo.jpg',
-      displayText: 'Trust Wallet',
-      isConnected: false,
-      placeholder: 'Enter Trust Wallet address'
-    },
-    {
-      id: 'upi',
-      name: 'UPI',
-      image: 'https://example.com/upi-logo.jpg',
-      displayText: 'UPI',
-      isConnected: false,
-      placeholder: 'Enter UPI address'
-    }
-  ]
+  {
+    id: 'binance',
+    name: 'Binance',
+    image: '/public/binance.jpg', // Update the image path
+    displayText: 'Binance',
+    isConnected: false,
+    placeholder: 'Enter Binance address'
+  },
+  {
+    id: 'kucoin',
+    name: 'KuCoin',
+    image: '/public/kucoin.jpg', // Update the image path
+    displayText: 'KuCoin',
+    isConnected: false,
+    placeholder: 'Enter KuCoin address'
+  },
+  {
+    id: 'trustwallet',
+    name: 'Trust Wallet',
+    image: '/public/trustwallet.jpg', // Update the image path
+    displayText: 'Trust Wallet',
+    isConnected: false,
+    placeholder: 'Enter Trust Wallet address'
+  },
+  {
+    id: 'upi',
+    name: 'UPI',
+    image: '/public/upi.jpg', // Update the image path
+    displayText: 'UPI',
+    isConnected: false,
+    placeholder: 'Enter UPI address'
+  }
+]
 
   const toggleInput = (id: string) => {
     setOpenInputId(openInputId === id ? null : id)
