@@ -20,7 +20,7 @@ export default function PaymentMethods() {
   {
     id: 'binance',
     name: 'Binance',
-    image: 'https://imgur.com/iG3TN8k.jpg', // Update the image path
+    image: 'https://i.imgur.com/iG3TN8k.jpg', // Update the image path
     displayText: 'Binance',
     isConnected: false,
     placeholder: 'Enter Binance address'
@@ -36,7 +36,7 @@ export default function PaymentMethods() {
   {
     id: 'trustwallet',
     name: 'Trust Wallet',
-    image: 'https://i.imgur.com/PQ5PJpv.jpg', // Update the image path
+    image: 'https://i.imgur.com/undefined.jpg', // Update the image path
     displayText: 'Trust Wallet',
     isConnected: false,
     placeholder: 'Enter Trust Wallet address'
@@ -44,7 +44,7 @@ export default function PaymentMethods() {
   {
     id: 'upi',
     name: 'UPI',
-    image: 'https://imgur.com/FK31xFx.jpg', // Update the image path
+    image: 'https://i.imgur.com/FK31xFx.jpg', // Update the image path
     displayText: 'UPI',
     isConnected: false,
     placeholder: 'Enter UPI address'
