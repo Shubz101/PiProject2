@@ -20,7 +20,7 @@ export default function PaymentMethods() {
   {
     id: 'binance',
     name: 'Binance',
-    image: '/public/binance.jpg', // Update the image path
+    image: 'https://imgur.com/iG3TN8k.jpg', // Update the image path
     displayText: 'Binance',
     isConnected: false,
     placeholder: 'Enter Binance address'
