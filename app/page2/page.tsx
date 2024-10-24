@@ -21,7 +21,7 @@ export default function PaymentMethods() {
       name: 'Binance',
       image: 'https://example.com/binance-logo.jpg', // Replace with actual image URL
       displayText: 'Binance',
-      isConnected: true,
+      isConnected: false,
       placeholder: 'Enter Binance address'
     },
     {
@@ -29,7 +29,7 @@ export default function PaymentMethods() {
       name: 'KuCoin',
       image: 'https://example.com/kucoin-logo.jpg', // Replace with actual image URL
       displayText: 'KuCoin',
-      isConnected: true,
+      isConnected: false,
       placeholder: 'Enter KuCoin address'
     },
     {
@@ -37,7 +37,7 @@ export default function PaymentMethods() {
       name: 'Trust Wallet',
       image: 'https://example.com/trustwallet-logo.jpg', // Replace with actual image URL
       displayText: 'Trust Wallet',
-      isConnected: true,
+      isConnected: false,
       placeholder: 'Enter Trust Wallet address'
     },
     {
@@ -45,7 +45,7 @@ export default function PaymentMethods() {
       name: 'UPI',
       image: 'https://example.com/upi-logo.jpg', // Replace with actual image URL
       displayText: 'UPI',
-      isConnected: true,
+      isConnected: false,
       placeholder: 'Enter UPI address'
     }
 ]
@@ -97,7 +97,7 @@ export default function PaymentMethods() {
 
         <div className="mt-8">
           <button className="w-full py-4 bg-purple-100 text-purple-600 rounded-lg">
-            Add New Card
+            Connect Payment Address
           </button>
         </div>
       </div>
