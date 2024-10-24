@@ -28,7 +28,7 @@ export default function PaymentMethods() {
   {
     id: 'kucoin',
     name: 'KuCoin',
-    image: 'https://imgur.com/gDaDsRH', // Update the image path
+    image: 'https://imgur.com/gDaDsRH.jpg', // Update the image path
     displayText: 'KuCoin',
     isConnected: false,
     placeholder: 'Enter KuCoin address'
