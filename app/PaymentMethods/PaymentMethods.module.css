@@ -55,6 +55,7 @@
 .methodName {
   margin-left: 1rem;
   font-size: 1.125rem;
+  color:#000;
 }
 
 .connectedStatus {
@@ -67,7 +68,7 @@
 }
 
 .connectedStatus.not-connected {
-  color: rgb(255, 59, 48); /* Red color for not connected status */
+  color:#F4364C; /* Red color for not connected status */
 }
 
 .inputContainer {
