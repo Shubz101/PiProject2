@@ -141,7 +141,7 @@ export default function Home() {
       </div>
 
       <div className="w-full flex flex-col items-center mb-12 slide-up">
-        <Link href="/page2">
+        <Link href="/PaymentMethods">
           <button className="custom-purple text-white text-2xl font-bold py-4 px-16 rounded-full mt-8 shadow-lg hover-scale">
             Sell Your Pi
           </button>
