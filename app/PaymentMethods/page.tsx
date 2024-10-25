@@ -22,8 +22,7 @@ export default function PaymentMethods() {
   const [isAddressValid, setIsAddressValid] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
   const [buttonText, setButtonText] = useState('Continue')
-
-  const paymentMethods: PaymentMethod[] = [
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([
     {
       id: 'binance',
       name: 'Binance',
@@ -56,7 +55,7 @@ export default function PaymentMethods() {
       isConnected: false,
       placeholder: 'Enter UPI address'
     }
-  ]
+  ])
 
   useEffect(() => {
     const checkExistingPayment = async () => {
@@ -67,13 +66,17 @@ export default function PaymentMethods() {
         if (userData.paymentMethod) {
           setIsSaved(true)
           setButtonText('Next Step')
-          const methodIndex = paymentMethods.findIndex(m => m.id === userData.paymentMethod)
-          if (methodIndex !== -1) {
-            paymentMethods[methodIndex].isConnected = true
-            setSelectedMethod(userData.paymentMethod)
-            setPaymentAddress(userData.paymentAddress || '')
-            setOpenInputId(userData.paymentMethod)
-          }
+          setSelectedMethod(userData.paymentMethod)
+          setPaymentAddress(userData.paymentAddress || '')
+          setOpenInputId(userData.paymentMethod)
+          
+          // Update payment methods state
+          setPaymentMethods(prevMethods => 
+            prevMethods.map(method => ({
+              ...method,
+              isConnected: method.id === userData.paymentMethod
+            }))
+          )
         }
       } catch (error) {
         console.error('Error checking payment status:', error)
@@ -84,7 +87,7 @@ export default function PaymentMethods() {
   }, [])
 
   const toggleInput = (id: string) => {
-    if (isSaved) return // Prevent toggling if payment is already connected
+    if (isSaved) return
     setOpenInputId(openInputId === id ? null : id)
     setSelectedMethod(id)
   }
@@ -106,9 +109,12 @@ export default function PaymentMethods() {
         setPaymentAddress('')
         setIsAddressValid(false)
         setOpenInputId(null)
-        paymentMethods.forEach(method => {
-          method.isConnected = false
-        })
+        setPaymentMethods(prevMethods =>
+          prevMethods.map(method => ({
+            ...method,
+            isConnected: false
+          }))
+        )
       }
     } catch (error) {
       console.error('Error disconnecting payment method:', error)
@@ -133,9 +139,13 @@ export default function PaymentMethods() {
       if (response.ok) {
         setIsSaved(true)
         setButtonText('Next Step')
-        paymentMethods.forEach(method => {
-          method.isConnected = method.id === selectedMethod
-        })
+        // Update payment methods state
+        setPaymentMethods(prevMethods =>
+          prevMethods.map(method => ({
+            ...method,
+            isConnected: method.id === selectedMethod
+          }))
+        )
       }
     } catch (error) {
       console.error('Error saving payment method:', error)
