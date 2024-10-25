@@ -1,103 +1,73 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
-// Helper function to get telegramId from the session/cookie
-async function getTelegramId(req: NextRequest) {
-    // Get telegramId from your auth cookie/session
-    const telegramId = req.cookies.get('telegramId')?.value 
-    
-    if (!telegramId) {
-        throw new Error('Not authenticated')
-    }
-    
-    return parseInt(telegramId)
+// Helper function to get the authenticated user
+function getUserId(req: NextRequest) {
+    // This is a placeholder. Adjust it based on your actual auth mechanism.
+    return req.headers.get('telegramId'); // Or get it from session data
 }
 
 export async function GET(req: NextRequest) {
+    const telegramId = getUserId(req);
+    if (!telegramId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
-        const telegramId = await getTelegramId(req)
-        
-        const user = await prisma.user.findUnique({
-            where: {
-                telegramId: telegramId
-            }
-        })
-        
-        return NextResponse.json(user || {})
+        const user = await prisma.user.findUnique({ where: { telegramId } });
+        return NextResponse.json(user || {});
     } catch (error) {
-        console.error('Error fetching user:', error)
-        if (error.message === 'Not authenticated') {
-            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
-        }
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+        console.error('Error fetching user:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 
 export async function POST(req: NextRequest) {
+    const telegramId = getUserId(req);
+    if (!telegramId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
-        const telegramId = await getTelegramId(req)
-        const { paymentMethod, paymentAddress } = await req.json()
+        const { paymentMethod, paymentAddress } = await req.json();
         
-        const user = await prisma.user.findUnique({
-            where: {
-                telegramId: telegramId
-            }
-        })
-        
+        const user = await prisma.user.findUnique({ where: { telegramId } });
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 })
+            return NextResponse.json({ error: 'No user found' }, { status: 404 });
         }
 
         const updatedUser = await prisma.user.update({
-            where: {
-                telegramId: telegramId
-            },
-            data: {
-                paymentMethod,
-                paymentAddress
-            }
-        })
+            where: { telegramId },
+            data: { paymentMethod, paymentAddress },
+        });
 
-        return NextResponse.json(updatedUser)
+        return NextResponse.json(updatedUser);
     } catch (error) {
-        console.error('Error updating user:', error)
-        if (error.message === 'Not authenticated') {
-            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
-        }
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+        console.error('Error updating user:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
 
 export async function DELETE(req: NextRequest) {
+    const telegramId = getUserId(req);
+    if (!telegramId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
-        const telegramId = await getTelegramId(req)
-        
-        const user = await prisma.user.findUnique({
-            where: {
-                telegramId: telegramId
-            }
-        })
-        
+        const user = await prisma.user.findUnique({ where: { telegramId } });
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 })
+            return NextResponse.json({ error: 'No user found' }, { status: 404 });
         }
 
         const updatedUser = await prisma.user.update({
-            where: {
-                telegramId: telegramId
-            },
-            data: {
-                paymentMethod: null,
-                paymentAddress: null
-            }
-        })
+            where: { telegramId },
+            data: { paymentMethod: null, paymentAddress: null },
+        });
 
-        return NextResponse.json(updatedUser)
+        return NextResponse.json(updatedUser);
     } catch (error) {
-        console.error('Error deleting payment info:', error)
-        if (error.message === 'Not authenticated') {
-            return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
-        }
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+        console.error('Error deleting payment info:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
