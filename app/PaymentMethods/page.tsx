@@ -84,6 +84,7 @@ export default function PaymentMethods() {
   }, [])
 
   const toggleInput = (id: string) => {
+    if (isSaved) return // Prevent toggling if payment is already connected
     setOpenInputId(openInputId === id ? null : id)
     setSelectedMethod(id)
   }
@@ -91,6 +92,27 @@ export default function PaymentMethods() {
   const handleAddressChange = (address: string) => {
     setPaymentAddress(address)
     setIsAddressValid(address.trim().length > 0)
+  }
+
+  const handleDisconnect = async () => {
+    try {
+      const response = await fetch('/api/user', {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        setIsSaved(false)
+        setSelectedMethod(null)
+        setPaymentAddress('')
+        setIsAddressValid(false)
+        setOpenInputId(null)
+        paymentMethods.forEach(method => {
+          method.isConnected = false
+        })
+      }
+    } catch (error) {
+      console.error('Error disconnecting payment method:', error)
+    }
   }
 
   const handleConnect = async () => {
@@ -138,7 +160,11 @@ export default function PaymentMethods() {
           {paymentMethods.map((method) => (
             <div key={method.id}>
               <div 
-                className={`${styles.methodCard} ${method.isConnected ? styles.activeMethod : ''}`}
+                className={`${styles.methodCard} ${
+                  method.isConnected ? styles.connected : ''
+                } ${
+                  isSaved && !method.isConnected ? styles.disabled : ''
+                }`}
                 onClick={() => toggleInput(method.id)}
               >
                 <div className={styles.methodInfo}>
@@ -156,7 +182,7 @@ export default function PaymentMethods() {
                 </span>
               </div>
               
-              {openInputId === method.id && (
+              {openInputId === method.id && !isSaved && (
                 <div className={styles.inputContainer}>
                   <input 
                     type="text" 
@@ -171,13 +197,12 @@ export default function PaymentMethods() {
           ))}
         </div>
 
-        <div className={styles.connectButton}>
+        <div className={`${styles.connectButton} ${isSaved ? styles.disconnectButton : ''}`}>
           <button 
-            onClick={handleConnect}
-            disabled={!selectedMethod || !isAddressValid}
-            className={(!selectedMethod || !isAddressValid) ? styles.disabled : ''}
+            onClick={isSaved ? handleDisconnect : handleConnect}
+            disabled={!isSaved && (!selectedMethod || !isAddressValid)}
           >
-            Connect Payment Address
+            {isSaved ? 'Disconnect Payment Method' : 'Connect Payment Method'}
           </button>
         </div>
       </div>
