@@ -3,11 +3,16 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(req: NextRequest) {
     try {
-        // Get telegramId from URL search params
-        const telegramId = req.nextUrl.searchParams.get('telegramId')
+        const telegramIdStr = req.nextUrl.searchParams.get('telegramId')
         
-        if (!telegramId) {
+        if (!telegramIdStr) {
             return NextResponse.json({ error: 'Telegram ID is required' }, { status: 400 })
+        }
+
+        const telegramId = parseInt(telegramIdStr)
+        
+        if (isNaN(telegramId)) {
+            return NextResponse.json({ error: 'Invalid Telegram ID format' }, { status: 400 })
         }
 
         const user = await prisma.user.findUnique({
@@ -29,8 +34,8 @@ export async function POST(req: NextRequest) {
     try {
         const { telegramId, paymentMethod, paymentAddress } = await req.json()
         
-        if (!telegramId) {
-            return NextResponse.json({ error: 'Telegram ID is required' }, { status: 400 })
+        if (typeof telegramId !== 'number' || isNaN(telegramId)) {
+            return NextResponse.json({ error: 'Invalid or missing Telegram ID' }, { status: 400 })
         }
 
         // Find user by telegramId
@@ -59,11 +64,16 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     try {
-        // Get telegramId from URL search params
-        const telegramId = req.nextUrl.searchParams.get('telegramId')
+        const telegramIdStr = req.nextUrl.searchParams.get('telegramId')
         
-        if (!telegramId) {
+        if (!telegramIdStr) {
             return NextResponse.json({ error: 'Telegram ID is required' }, { status: 400 })
+        }
+
+        const telegramId = parseInt(telegramIdStr)
+        
+        if (isNaN(telegramId)) {
+            return NextResponse.json({ error: 'Invalid Telegram ID format' }, { status: 400 })
         }
 
         const user = await prisma.user.findUnique({
