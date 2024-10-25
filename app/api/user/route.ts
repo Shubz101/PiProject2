@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
+class AuthError extends Error {
+    constructor(message: string) {
+        super(message)
+        this.name = 'AuthError'
+    }
+}
+
 // Helper function to get telegramId from the request
-async function getTelegramId(req: NextRequest) {
-    // You'll need to implement your own way to get the telegram ID from the session/token
-    // This is just a placeholder - replace with your actual authentication logic
+async function getTelegramId(req: NextRequest): Promise<number> {
     const telegramId = req.headers.get('x-telegram-id')
     if (!telegramId) {
-        throw new Error('Unauthorized - No telegram ID found')
+        throw new AuthError('Unauthorized - No telegram ID found')
     }
     return parseInt(telegramId)
 }
@@ -26,7 +31,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(user)
     } catch (error) {
         console.error('Error fetching user:', error)
-        if (error.message.includes('Unauthorized')) {
+        if (error instanceof AuthError) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -57,7 +62,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(updatedUser)
     } catch (error) {
         console.error('Error updating user:', error)
-        if (error.message.includes('Unauthorized')) {
+        if (error instanceof AuthError) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -86,7 +91,7 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json(updatedUser)
     } catch (error) {
         console.error('Error deleting payment info:', error)
-        if (error.message.includes('Unauthorized')) {
+        if (error instanceof AuthError) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
