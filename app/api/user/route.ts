@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// Helper function to get the authenticated user
 function getUserId(req: NextRequest) {
-    // This is a placeholder. Adjust it based on your actual auth mechanism.
-    return req.headers.get('telegramId'); // Or get it from session data
+    const telegramId = req.headers.get('telegramId');
+    return telegramId ? parseInt(telegramId, 10) : null; // Convert to number
 }
 
 export async function GET(req: NextRequest) {
@@ -22,6 +21,7 @@ export async function GET(req: NextRequest) {
     }
 }
 
+// The same change should be applied to POST and DELETE methods as well:
 export async function POST(req: NextRequest) {
     const telegramId = getUserId(req);
     if (!telegramId) {
