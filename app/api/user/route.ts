@@ -13,24 +13,24 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     try {
-        const userData = await req.json()
-        const telegramId = userData.telegramId || userData.id
+        const { paymentMethod, paymentAddress } = await req.json()
         
-        if (!telegramId) {
-            return NextResponse.json({ error: 'Telegram ID required' }, { status: 400 })
+        // Get the first user and update their payment info
+        const user = await prisma.user.findFirst()
+        
+        if (!user) {
+            return NextResponse.json({ error: 'No user found' }, { status: 404 })
         }
 
-        const updateData: any = {
-            paymentMethod: userData.paymentMethod,
-            paymentAddress: userData.paymentAddress
-        }
-
-        const user = await prisma.user.update({
-            where: { telegramId: parseInt(telegramId) },
-            data: updateData
+        const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                paymentMethod,
+                paymentAddress
+            }
         })
 
-        return NextResponse.json(user)
+        return NextResponse.json(updatedUser)
     } catch (error) {
         console.error('Error updating user:', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
