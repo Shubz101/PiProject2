@@ -51,7 +51,7 @@
 }
 
 .methodCard.connected {
-  background-color: rgb(220, 252, 231);
+  background-color: rgb(140, 255, 180);
 }
 
 .methodCard:not(.disabled):hover {
