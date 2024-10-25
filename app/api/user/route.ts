@@ -36,3 +36,26 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const user = await prisma.user.findFirst()
+        
+        if (!user) {
+            return NextResponse.json({ error: 'No user found' }, { status: 404 })
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                paymentMethod: null,
+                paymentAddress: null
+            }
+        })
+
+        return NextResponse.json(updatedUser)
+    } catch (error) {
+        console.error('Error deleting payment info:', error)
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    }
+}
